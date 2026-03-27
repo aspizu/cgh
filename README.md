@@ -19,3 +19,13 @@ The CLI interface is similar to the GitHub CLI `gh`.
 ```bash
 cgh --help
 ```
+
+## Agents
+
+Add the following to your `AGENTS.md` file to use cgh to work with CodeCommit
+repositories.
+
+```md
+This is an AWS CodeCommit repository, use the `cgh` command to work with pull requests.
+The interface is exactly the same as the GitHub's CLI `gh` command.
+```
