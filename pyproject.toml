@@ -1,0 +1,19 @@
+[project]
+name = "cgh"
+version = "1.0.0"
+description = "Command-line interface to AWS CodeCommit"
+readme = "README.md"
+authors = [{ name = "Priyanshu Dangare", email = "hello@aspiz.uk" }]
+requires-python = ">=3.14"
+dependencies = [
+    "humanize>=4.15.0",
+    "rich>=14.3.3",
+    "rich-click>=1.9.7",
+]
+
+[project.scripts]
+cgh = "cgh:main"
+
+[build-system]
+requires = ["uv_build>=0.11.1,<0.12.0"]
+build-backend = "uv_build"
