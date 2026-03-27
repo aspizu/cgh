@@ -1,5 +1,5 @@
+import builtins
 from datetime import datetime
-from typing import List
 
 import humanize
 import rich_click as click
@@ -26,7 +26,7 @@ def pr():
 )
 def list(author: str | None, status: str):
     author_arn = author and get_user_arn(None if author == "@me" else author)
-    pr_ids: List[str] = (
+    pr_ids: builtins.list[str] = (
         aws.cmd("codecommit list-pull-requests")
         .optv("--repository-name", get_current_repository())
         .optv("--pull-request-status", status)
@@ -52,6 +52,8 @@ def list(author: str | None, status: str):
         )
         author_arn = parse_user_arn(pr.authorArn)
         author_username = author_arn and author_arn.username
+        src = pr.pullRequestTargets[0].sourceReference.removeprefix("refs/heads/")
+        dest = pr.pullRequestTargets[0].destinationReference.removeprefix("refs/heads/")
         table.add_row(
             Text(
                 f"#{pr_id}",
@@ -63,7 +65,7 @@ def list(author: str | None, status: str):
             ),
             str(author_username),
             pr.title,
-            f"{pr.pullRequestTargets[0].destinationReference.removeprefix('refs/heads/')} <- {pr.pullRequestTargets[0].sourceReference.removeprefix('refs/heads/')}",
+            f"{dest} <- {src}",
             humanize.naturaltime(datetime.fromisoformat(pr.lastActivityDate)),
             humanize.naturaltime(datetime.fromisoformat(pr.creationDate)),
         )

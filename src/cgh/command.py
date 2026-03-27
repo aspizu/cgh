@@ -1,8 +1,8 @@
 import shlex
 import shutil
 import subprocess
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator
 
 from .json_object import JSONObject
 
