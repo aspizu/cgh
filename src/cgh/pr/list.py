@@ -7,14 +7,9 @@ from rich import box, print
 from rich.table import Table
 from rich.text import Text
 
-from .aws import get_user_arn, parse_user_arn
-from .command import aws
-from .git import get_current_repository
-
-
-@click.group()
-def pr():
-    pass
+from ..aws import get_user_arn, parse_user_arn
+from ..command import aws
+from ..git import get_current_repository
 
 
 @click.command()
@@ -70,6 +65,3 @@ def list(author: str | None, status: str):
             humanize.naturaltime(datetime.fromisoformat(pr.creationDate)),
         )
     print(table)
-
-
-pr.add_command(list)
