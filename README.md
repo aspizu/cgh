@@ -1,5 +1,7 @@
 # AWS CodeCommit CLI for humans
 
+[![Discord](https://img.shields.io/discord/1462182798210109505?style=flat&logo=discord&label=Discord)](https://discord.gg/mKQqsJ6UtK) ![GitHub License](https://img.shields.io/github/license/aspizu/cgh)
+
 A better CLI for working with AWS CodeCommit repositories.
 
 ## Installation
