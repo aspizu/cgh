@@ -14,14 +14,6 @@ Use uv to install cgh:
 uv tool install git+https://github.com/aspizu/cgh
 ```
 
-## Usage
-
-The CLI interface is similar to the GitHub CLI `gh`.
-
-```bash
-cgh --help
-```
-
 ## Agents
 
 Add the following to your `AGENTS.md` file to use cgh to work with CodeCommit
@@ -30,4 +22,36 @@ repositories.
 ```md
 This is an AWS CodeCommit repository, use the `cgh` command to work with pull requests.
 The interface is exactly the same as the GitHub's CLI `gh` command.
+```
+
+## Usage
+
+### `cgh pr create`
+
+Create a pull request from the current branch.
+
+```sh
+cgh pr create --title "Fix login bug"
+cgh pr create --title "Add feature" --body "Detailed description" --base main
+cgh pr create --title "Hotfix" --head hotfix-branch --base production
+```
+
+### `cgh pr list`
+
+List pull requests, with optional filters.
+
+```sh
+cgh pr list
+cgh pr list --author @me
+cgh pr list --status open --author @me
+cgh pr list --status merged
+```
+
+### `cgh pr view`
+
+View details of a pull request by its ID.
+
+```sh
+cgh pr view 42
+cgh pr view 42 --web   # open in browser
 ```
