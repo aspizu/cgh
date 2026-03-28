@@ -12,6 +12,7 @@ from rich.text import Text
 from ..aws import get_current_repository_region, get_pr_url, parse_user_arn
 from ..command import aws
 from ..git import get_current_repository
+from ..json_object import JSONObject
 from ..utils import open_browser
 
 console = Console()
@@ -28,6 +29,23 @@ def status_style(status: str) -> tuple[str, str]:
             return "CLOSED", "bold red"
         case _:
             return status, "bold yellow"
+
+
+def short_hash(commit: str, length: int = 7) -> str:
+    return commit[:length]
+
+
+def format_approval_rule(rule: JSONObject) -> Text:
+    import json
+
+    content = json.loads(rule.approvalRuleContent)
+    statements = content.get("Statements", [])
+    needed = statements[0].get("NumberOfApprovalsNeeded", "?") if statements else "?"
+
+    t = Text()
+    t.append(rule.approvalRuleName, style="bold white")
+    t.append(f"  —  {needed} approval(s) needed", style="dim")
+    return t
 
 
 @click.command()
@@ -90,5 +108,12 @@ def view(id: str, web: bool):
         )
     else:
         console.print(Text("  No description provided.", style="dim italic"))
+
+    approval_rules = getattr(pr, "approvalRules", [])
+    if approval_rules:
+        console.print()
+        console.print(Rule("[dim]Approval Rules[/dim]", style="dim"))
+        for rule in approval_rules:
+            console.print(format_approval_rule(rule))
 
     console.print()
