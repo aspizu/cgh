@@ -55,3 +55,4 @@ class Command:
 
 aws = Command.from_which("aws")
 git = Command.from_which("git")
+jira_cli = Command.from_which("jira")

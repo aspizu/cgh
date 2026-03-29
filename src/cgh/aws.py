@@ -2,10 +2,8 @@ import re
 from dataclasses import dataclass
 
 from .command import aws, git
-from .memoize import memoize
 
 
-@memoize()
 def get_user_arn(username: str | None = None) -> str:
     return aws.cmd("iam get-user").optv("--user-name", username).json().User.Arn
 

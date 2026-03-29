@@ -11,7 +11,9 @@ from rich.text import Text
 
 from ..aws import get_current_repository_region, get_pr_url, parse_user_arn
 from ..command import aws
+from ..errors import Error
 from ..git import get_current_repository
+from ..jira import get_work_item_url, parse_pr_title
 from ..json_object import JSONObject
 from ..utils import open_browser
 
@@ -51,7 +53,10 @@ def format_approval_rule(rule: JSONObject) -> Text:
 @click.command()
 @click.argument("ID")
 @click.option("--web", flag_value=True, help="Open pull request in web browser.")
-def view(id: str, web: bool):
+@click.option(
+    "--jira", flag_value=True, help="Open associated jira ticket in web browser."
+)
+def view(id: str, web: bool, jira: bool):
     pr_id = id.lstrip("#")
     region = get_current_repository_region()
     assert region is not None
@@ -66,6 +71,13 @@ def view(id: str, web: bool):
         .json()
         .pullRequest
     )
+
+    if jira:
+        jira_id = parse_pr_title(pr.title)
+        if jira_id is None:
+            msg = f'The PR with title "{pr.title}" does not have jira ticket.'
+            raise Error(msg)
+        open_browser(get_work_item_url(jira_id))
 
     created = humanize.naturaltime(datetime.fromisoformat(pr.creationDate))
     updated = humanize.naturaltime(datetime.fromisoformat(pr.lastActivityDate))

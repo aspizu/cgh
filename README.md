@@ -55,3 +55,42 @@ View details of a pull request by its ID.
 cgh pr view 42
 cgh pr view 42 --web   # open in browser
 ```
+
+## Jira Integration
+
+cgh can automatically update Jira issues when creating pull requests.
+
+### Configuration
+
+Add a `[jira]` section to `~/.config/cgh/config.toml`:
+
+```toml
+[jira]
+url = "https://your-org.atlassian.net"
+key = "PROJECT"
+```
+
+- `url` — base URL of your Jira instance
+- `key` — the Jira project key (e.g. `PROJECT` for tickets like `PROJECT-123`)
+
+### Pull Request field
+
+When you create a PR with a Jira ticket number in the title, cgh will automatically set the `Pull-Request` custom field on the corresponding Jira issue to the PR URL. This requires [`jira-cli`](https://github.com/ankitpokhrel/jira-cli) to be installed and authenticated.
+
+PR titles must start with the project key followed by the ticket number:
+
+```sh
+cgh pr create --title "PROJECT-123 Fix login bug"
+```
+
+cgh will run:
+
+```sh
+jira issue edit PROJECT-123 --custom Pull-Request=<pr_url>
+```
+
+If the Jira update fails (e.g. jira-cli is not installed or not configured), the error is shown and the PR is still created successfully. Pass `--verbose` to the root command to see the full error traceback:
+
+```sh
+cgh --verbose pr create --title "PROJECT-123 Fix login bug"
+```
