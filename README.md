@@ -47,13 +47,24 @@ cgh pr list --status open --author @me
 cgh pr list --status merged
 ```
 
+### `cgh pr edit`
+
+Edit the title or body of an existing pull request.
+
+```sh
+cgh pr edit 42 --title "New title"
+cgh pr edit 42 --body "Updated description"
+cgh pr edit 42 --title "New title" --body "Updated description"
+```
+
 ### `cgh pr view`
 
 View details of a pull request by its ID.
 
 ```sh
 cgh pr view 42
-cgh pr view 42 --web   # open in browser
+cgh pr view 42 --web    # open in browser
+cgh pr view 42 --jira   # open associated Jira ticket in browser
 ```
 
 ## Jira Integration
