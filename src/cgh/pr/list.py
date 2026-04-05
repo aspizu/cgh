@@ -1,4 +1,3 @@
-import builtins
 from datetime import datetime
 
 import humanize
@@ -7,8 +6,8 @@ from rich import box, print
 from rich.table import Table
 from rich.text import Text
 
-from ..aws import get_user_arn, parse_user_arn
-from ..command import aws
+from .. import aws
+from ..aws import UserArn
 from ..git import get_current_repository
 
 
@@ -19,10 +18,14 @@ from ..git import get_current_repository
 @click.option(
     "--status", "-s", help="Status of the PR. (open, closed, merged)", default="open"
 )
-def list(author: str | None, status: str):
-    author_arn = author and get_user_arn(None if author == "@me" else author)
-    pr_ids: builtins.list[str] = (
-        aws.cmd("codecommit list-pull-requests")
+def list_prs(author: str | None, status: str) -> None:
+    author_arn = author and str(
+        UserArn.get_current_user()
+        if author == "@me"
+        else UserArn.get_from_username(author)
+    )
+    pr_ids: list[str] = (
+        aws.cli.cmd("codecommit list-pull-requests")
         .optv("--repository-name", get_current_repository())
         .optv("--pull-request-status", status)
         .optv("--author-arn", author_arn)
@@ -40,13 +43,13 @@ def list(author: str | None, status: str):
     )
     for pr_id in pr_ids:
         pr = (
-            aws.cmd("codecommit get-pull-request")
+            aws.cli.cmd("codecommit get-pull-request")
             .optv("--pull-request-id", pr_id)
             .json()
             .pullRequest
         )
-        author_arn = parse_user_arn(pr.authorArn)
-        author_username = author_arn and author_arn.username
+        pr_author = UserArn.parse(pr.authorArn)
+        author_username = pr_author.username
         src = pr.pullRequestTargets[0].sourceReference.removeprefix("refs/heads/")
         dest = pr.pullRequestTargets[0].destinationReference.removeprefix("refs/heads/")
         table.add_row(
@@ -55,7 +58,7 @@ def list(author: str | None, status: str):
                 style={
                     "OPEN": "green",
                     "CLOSED": "red",
-                    "merged": "gray",
+                    "MERGED": "purple",
                 }[pr.pullRequestStatus],
             ),
             str(author_username),

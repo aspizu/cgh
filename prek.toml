@@ -1,4 +1,0 @@
-[[repos]]
-rev = "v0.15.8"
-repo = 'https://github.com/astral-sh/ruff-pre-commit'
-hooks = [{ id = 'ruff-check' }, { id = 'ruff-format' }]

@@ -1,11 +1,13 @@
 from pathlib import Path
 
-from .command import git
+from .command import Command
+
+cli = Command.from_which("git")
 
 
 def get_current_repository() -> str:
-    return Path(git.cmd("remote get-url origin").output()).name
+    return Path(cli.cmd("remote get-url origin").output()).name
 
 
 def get_current_branch() -> str:
-    return git.cmd("git branch --show-current").output()
+    return cli.cmd("branch --show-current").output()

@@ -9,6 +9,7 @@ def open_browser(url: str) -> None:
             ["/mnt/c/Windows/System32/cmd.exe", "/c", "start", url],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            check=False,
         )
     else:
         webbrowser.open(url)

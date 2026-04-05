@@ -1,10 +1,13 @@
 import shlex
 import shutil
 import subprocess
-from collections.abc import Iterator
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from .json_object import JSONObject
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 @dataclass
@@ -38,7 +41,8 @@ class Command:
     def from_which(cls, program: str) -> Command:
         program_ = shutil.which(program)
         if program_ is None:
-            raise RuntimeError(f"Program '{program}' not found")
+            msg = f"Program '{program}' not found"
+            raise RuntimeError(msg)
         return cls(program_, ())
 
     def output(self) -> str:
@@ -48,11 +52,5 @@ class Command:
         return JSONObject.parse(self.output())
 
     def run(self) -> int:
-        p = subprocess.run([*self])
-        p.check_returncode()
+        p = subprocess.run([*self], check=True)
         return p.returncode
-
-
-aws = Command.from_which("aws")
-git = Command.from_which("git")
-jira_cli = Command.from_which("jira")
