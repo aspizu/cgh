@@ -11,10 +11,9 @@ from rich.panel import Panel
 from rich.rule import Rule
 from rich.text import Text
 
-from .. import aws
-from ..aws import UserArn, get_current_repo_region, get_pr_url
+from .. import aws, git
+from ..aws import UserArn
 from ..errors import Error
-from ..git import get_current_repository
 from ..jira import Ticket
 from ..utils import open_browser
 
@@ -60,11 +59,11 @@ def format_approval_rule(rule: JSONObject) -> Text:
 )
 def view(id: str, web: bool, jira: bool) -> None:
     pr_id = id.lstrip("#")
-    region = get_current_repo_region()
+    region = aws.get_current_repo_region()
     assert region is not None
 
     if web:
-        open_browser(get_pr_url(region, get_current_repository(), pr_id))
+        open_browser(aws.get_pr_url(region, git.get_current_repository(), pr_id))
         return
 
     pr = (

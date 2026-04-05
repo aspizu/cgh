@@ -6,9 +6,8 @@ from rich import box, print
 from rich.table import Table
 from rich.text import Text
 
-from .. import aws
+from .. import aws, git
 from ..aws import UserArn
-from ..git import get_current_repository
 
 
 @click.command()
@@ -26,7 +25,7 @@ def list_prs(author: str | None, status: str) -> None:
     )
     pr_ids: list[str] = (
         aws.cli.cmd("codecommit list-pull-requests")
-        .optv("--repository-name", get_current_repository())
+        .optv("--repository-name", git.get_current_repository())
         .optv("--pull-request-status", status)
         .optv("--author-arn", author_arn)
         .json()
