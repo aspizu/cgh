@@ -57,6 +57,14 @@ cgh pr edit 42 --body "Updated description"
 cgh pr edit 42 --title "New title" --body "Updated description"
 ```
 
+### `cgh web`
+
+Open the current repository at the current branch in the browser.
+
+```sh
+cgh web
+```
+
 ### `cgh pr view`
 
 View details of a pull request by its ID.

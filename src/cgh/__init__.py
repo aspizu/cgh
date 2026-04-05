@@ -3,6 +3,7 @@ from rich import print
 
 from .errors import Error
 from .pr import pr
+from .web import web
 
 
 class MainGroup(click.Group):
@@ -25,3 +26,4 @@ def main(ctx: click.Context, verbose: bool) -> None:
 
 
 main.add_command(pr)
+main.add_command(web)
