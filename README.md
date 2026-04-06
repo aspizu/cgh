@@ -47,6 +47,15 @@ cgh pr list --status open --author @me
 cgh pr list --status merged
 ```
 
+### `cgh pr checkout`
+
+Checkout the branch of a pull request.
+
+```sh
+cgh pr checkout 42
+cgh pr checkout "#42"
+```
+
 ### `cgh pr edit`
 
 Edit the title or body of an existing pull request.
