@@ -84,6 +84,25 @@ cgh pr view 42 --web    # open in browser
 cgh pr view 42 --jira   # open associated Jira ticket in browser
 ```
 
+### `cgh pr merge`
+
+Merge a pull request.
+
+```sh
+cgh pr merge 42
+cgh pr merge 42 --strategy fast-forward
+cgh pr merge 42 --description "Merged PR #42"
+```
+
+### `cgh clone`
+
+Clone a CodeCommit repository.
+
+```sh
+cgh clone my-repo
+cgh clone my-repo my-directory
+```
+
 ## Jira Integration
 
 cgh can automatically update Jira issues when creating pull requests.
