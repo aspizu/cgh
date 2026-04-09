@@ -1,6 +1,7 @@
 import rich_click as click
 from rich import print
 
+from .clone import clone
 from .errors import Error
 from .pr import pr
 from .web import web
@@ -27,3 +28,4 @@ def main(ctx: click.Context, verbose: bool) -> None:
 
 main.add_command(pr)
 main.add_command(web)
+main.add_command(clone)
