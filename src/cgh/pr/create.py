@@ -43,7 +43,7 @@ def create(base: str | None, body: str | None, head: str | None, title: str) -> 
     print(f"Created PR [green]#{pr_id}[/green] at {pr_url}")
     if ticket is None:
         return
-    jira.cli.cmd("issue edit").args(str(ticket)).optv(
+    jira.cli.cmd("issue edit --no-input").args(str(ticket)).optv(
         "--custom", f"Pull-Request={pr_url}"
     ).run()
     print(f"Updated Jira issue [cyan]{ticket}[/cyan] at {ticket.url()}")
