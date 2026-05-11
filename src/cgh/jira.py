@@ -6,7 +6,7 @@ from .config import config
 
 cli = Command.from_which("jira")
 
-_pr_title_re = re.compile(rf"^\s*{config.jira}-(\d+)")
+_pr_title_re = re.compile(rf"^\s*{config.jira.key}-(\d+)")  # ty: ignore
 
 
 def ensure_jira() -> None:
